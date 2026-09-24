@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="description" content="ELIT PET GROOMING 2.0 - gestión de peluquería canina">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="logo.jpg">
+  <link rel="stylesheet" href="styles.css">
+  <title>ELIT PET GROOMING 2.0</title>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <section id="authView" class="auth-view">
+    <div class="auth-card">
+      <img src="logo.jpg" class="auth-logo" alt="ELIT PET GROOMING">
+      <h1>ELIT PET GROOMING <span>2.0</span></h1>
+      <p class="muted">Gestión profesional para tu peluquería de mascotas</p>
+
+      <div class="tabs">
+        <button class="tab active" data-auth="login">Iniciar sesión</button>
+        <button class="tab" data-auth="register">Crear cuenta</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>Correo electrónico<input id="loginEmail" type="email" required autocomplete="email"></label>
+        <label>Contraseña<input id="loginPassword" type="password" required autocomplete="current-password"></label>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <label>Nombre del negocio<input id="regBusiness" required></label>
+        <label>Tu nombre<input id="regOwner" required></label>
+        <label>Correo electrónico<input id="regEmail" type="email" required autocomplete="email"></label>
+        <label>Contraseña<input id="regPassword" type="password" minlength="6" required autocomplete="new-password"></label>
+        <button class="btn primary" type="submit">Crear mi cuenta</button>
+      </form>
+
+      <p class="small">Versión inicial: datos locales. La conexión a la nube con Supabase se agrega en el siguiente paso.</p>
+    </div>
+  </section>
+
+  <section id="appView" class="app-view hidden">
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo.jpg" alt="Logo">
+        <div><strong>ELIT PET GROOMING</strong><small id="businessLabel"></small></div>
+      </div>
+      <div class="top-actions">
+        <button id="installBtn" class="icon-btn hidden">⬇️ Instalar</button>
+        <button id="logoutBtn" class="icon-btn">Salir</button>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-page="dashboard">🏠 Inicio</button>
+      <button class="nav-btn" data-page="pets">🐶 Mascotas</button>
+      <button class="nav-btn" data-page="clients">👤 Clientes</button>
+      <button class="nav-btn" data-page="calendar">📅 Agenda</button>
+      <button class="nav-btn" data-page="finance">💰 Finanzas</button>
+      <button class="nav-btn" data-page="settings">⚙️ Mi negocio</button>
+    </nav>
+
+    <main class="main">
+      <section id="dashboard" class="page active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">Panel de control</p>
+            <h2>Hola, <span id="ownerLabel"></span> 👋</h2>
+            <p>Administra tus mascotas, clientes, citas y ventas desde un solo lugar.</p>
+          </div>
+          <button class="btn primary" id="newPetBtn">+ Nueva mascota</button>
+        </div>
+
+        <div class="stats">
+          <article><span>🐶</span><b id="statPets">0</b><small>Mascotas</small></article>
+          <article><span>👤</span><b id="statClients">0</b><small>Clientes</small></article>
+          <article><span>📅</span><b id="statAppointments">0</b><small>Próximas citas</small></article>
+          <article><span>💰</span><b id="statRevenue">$0.00</b><small>Ingresos registrados</small></article>
+        </div>
+
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head"><h3>Próximas citas</h3><button class="link" data-page-link="calendar">Ver agenda</button></div>
+            <div id="upcomingList" class="list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>Últimas mascotas</h3><button class="link" data-page-link="pets">Ver todas</button></div>
+            <div id="recentPets" class="list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="pets" class="page">
+        <div class="page-head"><div><p class="eyebrow">Pacientes</p><h2>Mascotas</h2></div><button class="btn primary" id="addPetBtn">+ Registrar mascota</button></div>
+        <div class="toolbar"><input id="petSearch" placeholder="Buscar mascota, dueño o raza..."></div>
+        <div id="petsGrid" class="cards"></div>
+      </section>
+
+      <section id="clients" class="page">
+        <div class="page-head"><div><p class="eyebrow">Agenda de clientes</p><h2>Clientes</h2></div><button class="btn primary" id="addClientBtn">+ Nuevo cliente</button></div>
+        <div id="clientsGrid" class="cards"></div>
+      </section>
+
+      <section id="calendar" class="page">
+        <div class="page-head"><div><p class="eyebrow">Organización</p><h2>Agenda</h2></div><button class="btn primary" id="addAppointmentBtn">+ Nueva cita</button></div>
+        <div id="appointmentsList" class="appointments"></div>
+      </section>
+
+      <section id="finance" class="page">
+        <div class="page-head"><div><p class="eyebrow">Control económico</p><h2>Finanzas</h2></div><button class="btn primary" id="addPaymentBtn">+ Registrar pago</button></div>
+        <div class="stats finance-stats">
+          <article><span>💵</span><b id="financeTotal">$0.00</b><small>Total registrado</small></article>
+          <article><span>📆</span><b id="financeMonth">$0.00</b><small>Este mes</small></article>
+        </div>
+        <div class="panel"><div class="panel-head"><h3>Historial de pagos</h3></div><div id="paymentsList" class="list"></div></div>
+      </section>
+
+      <section id="settings" class="page">
+        <div class="page-head"><div><p class="eyebrow">Configuración</p><h2>Mi negocio</h2></div></div>
+        <form id="profileForm" class="panel form-grid">
+          <div class="profile-logo"><img src="logo.jpg" alt="Logo"></div>
+          <label>Nombre del negocio<input id="profileBusiness" required></label>
+          <label>Propietario<input id="profileOwner" required></label>
+          <label>Teléfono<input id="profilePhone"></label>
+          <label>Dirección<input id="profileAddress"></label>
+          <label class="full">Descripción<input id="profileDescription"></label>
+          <div class="full"><button class="btn primary" type="submit">Guardar información</button></div>
+        </form>
+      </section>
+    </main>
+  </section>
+
+  <dialog id="petDialog">
+    <form method="dialog" id="petForm" class="dialog-form">
+      <div class="dialog-head"><h3 id="petDialogTitle">Registrar mascota</h3><button type="button" class="close" data-close="petDialog">×</button></div>
+      <input type="hidden" id="petId">
+      <div class="form-grid">
+        <label>Nombre de mascota<input id="petName" required></label>
+        <label>Propietario<input id="petOwner" required></label>
+        <label>Teléfono<input id="petPhone"></label>
+        <label>Especie<select id="petSpecies"><option>Perro</option><option>Gato</option><option>Otro</option></select></label>
+        <label>Raza<input id="petBreed"></label>
+        <label>Sexo<select id="petSex"><option>Hembra</option><option>Macho</option><option>No especificado</option></select></label>
+        <label>Edad<input id="petAge"></label>
+        <label>Peso (kg)<input id="petWeight" type="number" step="0.1"></label>
+        <label>Servicio / corte<input id="petService"></label>
+        <label>Precio<input id="petPrice" type="number" step="0.01"></label>
+        <label>Descuento<input id="petDiscount" type="number" step="0.01" value="0"></label>
+        <label>Próxima visita<input id="petNext" type="date"></label>
+        <label class="full">Observaciones<textarea id="petNotes"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="btn ghost" data-close="petDialog">Cancelar</button><button class="btn primary" type="submit">Guardar mascota</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="clientDialog">
+    <form method="dialog" id="clientForm" class="dialog-form">
+      <div class="dialog-head"><h3>Nuevo cliente</h3><button type="button" class="close" data-close="clientDialog">×</button></div>
+      <div class="form-grid">
+        <label>Nombre<input id="clientName" required></label><label>Teléfono<input id="clientPhone"></label>
+        <label>Correo<input id="clientEmail" type="email"></label><label>Dirección<input id="clientAddress"></label>
+        <label class="full">Notas<textarea id="clientNotes"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="btn ghost" data-close="clientDialog">Cancelar</button><button class="btn primary">Guardar cliente</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="appointmentDialog">
+    <form method="dialog" id="appointmentForm" class="dialog-form">
+      <div class="dialog-head"><h3>Nueva cita</h3><button type="button" class="close" data-close="appointmentDialog">×</button></div>
+      <div class="form-grid">
+        <label>Mascota<select id="appointmentPet" required></select></label>
+        <label>Fecha y hora<input id="appointmentDate" type="datetime-local" required></label>
+        <label>Servicio<input id="appointmentService"></label><label>Precio<input id="appointmentPrice" type="number" step="0.01"></label>
+        <label class="full">Notas<textarea id="appointmentNotes"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="btn ghost" data-close="appointmentDialog">Cancelar</button><button class="btn primary">Guardar cita</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="paymentDialog">
+    <form method="dialog" id="paymentForm" class="dialog-form">
+      <div class="dialog-head"><h3>Registrar pago</h3><button type="button" class="close" data-close="paymentDialog">×</button></div>
+      <div class="form-grid">
+        <label>Mascota<select id="paymentPet"></select></label><label>Monto<input id="paymentAmount" type="number" step="0.01" required></label>
+        <label>Método<select id="paymentMethod"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Otro</option></select></label>
+        <label>Fecha<input id="paymentDate" type="date"></label>
+        <label class="full">Notas<textarea id="paymentNotes"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="btn ghost" data-close="paymentDialog">Cancelar</button><button class="btn primary">Guardar pago</button></div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

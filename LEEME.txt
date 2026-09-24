@@ -1,0 +1,23 @@
+ELIT PET GROOMING 2.0 — NUEVA VERSION
+
+Incluye:
+- Logo de ELIT PET GROOMING integrado.
+- Inicio de sesión y creación de cuenta.
+- Datos separados por cuenta en este prototipo local.
+- Mascotas: crear, editar, eliminar, buscar.
+- Clientes.
+- Agenda/citas.
+- Finanzas y pagos.
+- Recordatorios por WhatsApp.
+- Perfil del negocio.
+- PWA instalable en celular/computadora.
+
+IMPORTANTE:
+Esta versión guarda los datos localmente en el dispositivo.
+El siguiente paso es conectar la misma interfaz a Supabase para:
+- sincronizar datos en la nube,
+- iniciar sesión desde varios dispositivos,
+- separar los datos de cada negocio,
+- guardar fotos en almacenamiento de nube.
+
+NO compartas contraseñas, Secret Keys ni Service Role Keys.
